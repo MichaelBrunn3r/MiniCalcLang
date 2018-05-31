@@ -2,3 +2,4 @@ target
 .factorypath
 .vscode
 .settings
+src/main/antlr4/io/github/orangeutan/minicalc/\.antlr/
