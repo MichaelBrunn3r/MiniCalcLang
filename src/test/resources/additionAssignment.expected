@@ -1,0 +1,13 @@
+MiniCalcFile
+    Line
+        AssignmentStatement
+            Assignment
+                T[a]
+                T[=]
+                BinaryOperation
+                    IntLiteral
+                        T[1]
+                    T[+]
+                    IntLiteral
+                        T[2]
+        T[<EOF>]

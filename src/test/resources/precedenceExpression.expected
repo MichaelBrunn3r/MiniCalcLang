@@ -1,0 +1,23 @@
+MiniCalcFile
+    Line
+        VarDeclarationStatement
+            VarDeclaration
+                T[var]
+                Assignment
+                    T[a]
+                    T[=]
+                    BinaryOperation
+                        BinaryOperation
+                            IntLiteral
+                                T[1]
+                            T[+]
+                            BinaryOperation
+                                IntLiteral
+                                    T[2]
+                                T[*]
+                                IntLiteral
+                                    T[3]
+                        T[-]
+                        IntLiteral
+                            T[4]
+        T[<EOF>]
