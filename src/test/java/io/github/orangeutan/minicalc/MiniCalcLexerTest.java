@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.Token;
 
 import io.github.orangeutan.minicalc.MiniCalcLexer;
 
-public class MiniCalcTest
+public class MiniCalcLexerTest
 {
     public static MiniCalcLexer lexerForCode(String code) {
         return new MiniCalcLexer(CharStreams.fromString(code));
