@@ -70,16 +70,16 @@ public class MiniCalcParserTest
 
     @Test
     void testAdditionAssignment() {
-        testResource("additionAssignment.expected", "additionAssignment.mc", "UTF-8");        
+        testResource("parserTest/additionAssignment.expected", "parserTest/additionAssignment.mc", "UTF-8");        
     } 
 
     @Test
     void testSimpleVarDecl() {
-        testResource("simpleVarDecl.expected", "simpleVarDecl.mc", "UTF-8");
+        testResource("parserTest/simpleVarDecl.expected", "parserTest/simpleVarDecl.mc", "UTF-8");
     }
 
     @Test
     void testPrecedenceExpression() {
-        testResource("precedenceExpression.expected", "precedenceExpression.mc", "UTF-8");
+        testResource("parserTest/precedenceExpression.expected", "parserTest/precedenceExpression.mc", "UTF-8");
     }
 }
