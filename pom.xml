@@ -10,22 +10,51 @@
 
     <properties>
         <project.package>${groupId}.minicalc</project.package>
-        <project.mainClass>MiniCalc</project.mainClass>
+        <project.mainClassName>MiniCalc</project.mainClassName>
+        <project.mainClass>${project.package}.${project.mainClassName}</project.mainClass>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--###################
+        # Dependency Versions # 
+        ####################-->
         <java.version>1.8</java.version>
         <antlr4.version>4.7</antlr4.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <junit.platform.version>1.2.0</junit.platform.version>
-        <maven.shade-plugin.version>3.1.1</maven.shade-plugin.version>
-        <maven.jar-plugin.version>3.1.0</maven.jar-plugin.version>
-        <maven.surefire-plugin.version>2.21.0</maven.surefire-plugin.version>
+
+        <!--###############
+        # Plugin Versions # 
+        ################-->
         <maven.compile-plugin.version>3.7.0</maven.compile-plugin.version>
+        <maven.surefire-plugin.version>2.21.0</maven.surefire-plugin.version>
         <maven.dependency-plugin.version>3.1.1</maven.dependency-plugin.version>
+        <maven.jar-plugin.version>3.1.0</maven.jar-plugin.version>
+        <maven.shade-plugin.version>3.1.1</maven.shade-plugin.version>
     </properties>
 
     <dependencies>
-        <!-- testing -->
+        <!--#####
+        # ANTLR # 
+        ######-->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr4.version}</version>
+        </dependency>
+
+        <!--#################
+        # Java Dependencies # 
+        ##################-->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <!--#######
+        # Testing # 
+        ###########-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -50,23 +79,13 @@
             <version>${junit.platform.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- antlr -->
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>${antlr4.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!--##############
+            # Create Sources # 
+            ###############-->
             <!-- Build Antlr Grammar -->
             <plugin>
                 <groupId>org.antlr</groupId>
@@ -80,6 +99,10 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--############
+            # Compile Code # 
+            #############-->
             <!-- Compile Java Code -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -92,6 +115,11 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
+
+            <!--#########
+            # Run Tests # 
+            #############-->
+            <!-- Run JUnit Tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -109,6 +137,10 @@
                     </dependency>
                 </dependencies>
             </plugin>    
+
+            <!--#######
+            # Package # 
+            ###########-->
             <!-- Copy project dependencies-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -140,7 +172,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>${project.package}.${project.mainClass}</mainClass>
+                            <mainClass>${project.mainClass}</mainClass>
                         </manifest>
                     </archive>  
                 </configuration>
