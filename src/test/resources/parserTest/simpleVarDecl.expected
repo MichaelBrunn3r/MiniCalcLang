@@ -2,10 +2,10 @@ MiniCalcFile
     Line
         VarDeclarationStatement
             VarDeclaration
-                T[var]
+                'var'
                 Assignment
-                    T[a]
-                    T[=]
+                    'a'
+                    '='
                     IntLiteral
-                        T[1]
-        T[<EOF>]
+                        '1'
+        '<EOF>'

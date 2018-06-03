@@ -2,22 +2,22 @@ MiniCalcFile
     Line
         VarDeclarationStatement
             VarDeclaration
-                T[var]
+                'var'
                 Assignment
-                    T[a]
-                    T[=]
+                    'a'
+                    '='
                     BinaryOperation
                         BinaryOperation
                             IntLiteral
-                                T[1]
-                            T[+]
+                                '1'
+                            '+'
                             BinaryOperation
                                 IntLiteral
-                                    T[2]
-                                T[*]
+                                    '2'
+                                '*'
                                 IntLiteral
-                                    T[3]
-                        T[-]
+                                    '3'
+                        '-'
                         IntLiteral
-                            T[4]
-        T[<EOF>]
+                            '4'
+        '<EOF>'

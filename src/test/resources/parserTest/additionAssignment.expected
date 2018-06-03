@@ -2,12 +2,12 @@ MiniCalcFile
     Line
         AssignmentStatement
             Assignment
-                T[a]
-                T[=]
+                'a'
+                '='
                 BinaryOperation
                     IntLiteral
-                        T[1]
-                    T[+]
+                        '1'
+                    '+'
                     IntLiteral
-                        T[2]
-        T[<EOF>]
+                        '2'
+        '<EOF>'
