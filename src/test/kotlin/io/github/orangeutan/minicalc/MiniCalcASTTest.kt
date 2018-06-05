@@ -54,8 +54,8 @@ class MiniCalcASTTest {
                     Position(1,0,1,8))),
                 Position(1,0,1,9))
 
-        val astWithoutPos = parseResource("astTest/varDeclaration.mc").toAST(considerPosition=false)
-        val astWithPos = parseResource("astTest/varDeclaration.mc").toAST(considerPosition=true)
+        val astWithoutPos = parseResource("astTest/varDeclaration.mc").toAST(savePos=false)
+        val astWithPos = parseResource("astTest/varDeclaration.mc").toAST(savePos= true)
 
         assertEquals(expectedASTWithoutPos, astWithoutPos)
         assertEquals(expectedASTWith, astWithPos)
@@ -101,8 +101,8 @@ class MiniCalcASTTest {
                     Position(2,0,2,12))),
                 Position(1,0,2,13))
 
-        val astWithoutPos = parseResource("astTest/simpleFile.mc").toAST(considerPosition=false)
-        val astWithPos = parseResource("astTest/simpleFile.mc").toAST(considerPosition=true)
+        val astWithoutPos = parseResource("astTest/simpleFile.mc").toAST(savePos= false)
+        val astWithPos = parseResource("astTest/simpleFile.mc").toAST(savePos= true)
 
         assertEquals(expectedASTWithoutPos, astWithoutPos)
         assertEquals(expectedASTWithPos, astWithPos)
@@ -125,7 +125,7 @@ class MiniCalcASTTest {
                     )
                 )
             ))
-        val ast = parseResource("astTest/castNumbers.mc").toAST(considerPosition=false)
+        val ast = parseResource("astTest/castNumbers.mc").toAST(savePos= false)
 
         assertEquals(expectedAST, ast)
     }
@@ -136,7 +136,7 @@ class MiniCalcASTTest {
             MiniCalcFile(listOf<Statement>(
                 Print(IDRef(ReferenceByName("a")))
             ))
-        val ast = parseResource("astTest/print.mc").toAST(considerPosition=false)
+        val ast = parseResource("astTest/print.mc").toAST(savePos= false)
 
         assertEquals(expectedAST, ast)
     }
