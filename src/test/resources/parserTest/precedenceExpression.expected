@@ -6,18 +6,18 @@ MiniCalcFile
                 Assignment
                     'a'
                     '='
-                    BinaryOperation
-                        BinaryOperation
-                            IntLiteral
+                    BinOp
+                        BinOp
+                            IntLit
                                 '1'
                             '+'
-                            BinaryOperation
-                                IntLiteral
+                            BinOp
+                                IntLit
                                     '2'
                                 '*'
-                                IntLiteral
+                                IntLit
                                     '3'
                         '-'
-                        IntLiteral
+                        IntLit
                             '4'
         '<EOF>'

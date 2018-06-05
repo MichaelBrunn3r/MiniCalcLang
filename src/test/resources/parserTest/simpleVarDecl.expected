@@ -6,6 +6,6 @@ MiniCalcFile
                 Assignment
                     'a'
                     '='
-                    IntLiteral
+                    IntLit
                         '1'
         '<EOF>'

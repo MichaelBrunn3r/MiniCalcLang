@@ -4,10 +4,10 @@ MiniCalcFile
             Assignment
                 'a'
                 '='
-                BinaryOperation
-                    IntLiteral
+                BinOp
+                    IntLit
                         '1'
                     '+'
-                    IntLiteral
+                    IntLit
                         '2'
         '<EOF>'
