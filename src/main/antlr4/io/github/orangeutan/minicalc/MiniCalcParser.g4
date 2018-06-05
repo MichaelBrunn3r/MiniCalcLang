@@ -20,19 +20,19 @@ varDeclaration : VAR assignment;
 
 assignment : ID ASSIGN expression;
 
-expression : left=expression operator=(DIVISION|ASTERISK) right=expression # binaryOperation
-           | left=expression operator=(PLUS|MINUS) right=expression # binaryOperation
+expression : left=expression operator=(DIVISION|ASTERISK) right=expression # binOp
+           | left=expression operator=(PLUS|MINUS) right=expression # binOp
            | value=expression AS targetType=type # typeConversion
-           | LPAREN expression RPAREN  # parenExpression
-           | ID # varReference
-           | MINUS expression # negativeExpression
-           | STR_OPEN (parts+=stringLiteralContent)* STR_CLOSE # stringLiteral
-           | INTLIT # intLiteral
-           | DECLIT # decimalLiteral;
+           | LPAREN expression RPAREN  # parenExpr
+           | ID # varRef
+           | MINUS expression # negExpr
+           | STR_OPEN (parts+=stringLiteralContent)* STR_CLOSE # strLit
+           | INTLIT # intLit
+           | DECLIT # decLit;
 
-stringLiteralContent : STR_CONTENT # constantString
-                     | INTERP_OPEN expression INTERP_CLOSE # interpolatedValue;
+stringLiteralContent : STR_CONTENT # strLitConstContent
+                     | INTERP_OPEN expression INTERP_CLOSE # strLitInterpContent;
 
-type : INT # integer
-     | DECIMAL  # decimal
-     | STRING # string;
+type : INT # int
+     | DECIMAL  # dec
+     | STRING # str;
