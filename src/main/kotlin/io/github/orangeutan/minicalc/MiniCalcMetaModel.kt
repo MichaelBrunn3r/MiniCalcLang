@@ -51,7 +51,7 @@ data class TypeConversion(val value: Expression, val targetType: Type,
                            override val position: Position? = null): Expression
 
 
-data class NamedValRef(val varName: ReferenceByName<NamedValDeclaration>,
+data class IDRef(val varName: ReferenceByName<NamedValDeclaration>,
                                override val position: Position? = null): Expression
 
 

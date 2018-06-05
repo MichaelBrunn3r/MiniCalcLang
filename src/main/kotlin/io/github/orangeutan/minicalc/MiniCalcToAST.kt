@@ -3,17 +3,11 @@ package io.github.orangeutan.minicalc
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.ParserRuleContext
 
-import io.github.orangeutan.minicalc.MiniCalcParser
 import io.github.orangeutan.minicalc.MiniCalcParser.*
-
-import io.github.orangeutan.minicalc.Print
-import io.github.orangeutan.minicalc.VarDeclaration
-import io.github.orangeutan.minicalc.Assignment
-import io.github.orangeutan.minicalc.InputDeclaration
 
 fun Token.startPoint() = Point(this.line, this.charPositionInLine)
 
-fun Token.endPoint() = Point(this.line, this.charPositionInLine + this.text.length)
+fun Token.endPoint() = Point(this.line, this.charPositionInLine)
 
 fun ParserRuleContext.toPosition(considerPosition: Boolean): Position? {
     if (considerPosition) {
@@ -60,7 +54,7 @@ fun ExpressionContext.toAST(considerPosition: Boolean = false): Expression {
             return StrLit(this.parts.map({ it.toAST(considerPosition) }),
                               this.toPosition(considerPosition))
         is ParenExprContext -> return this.expression().toAST(considerPosition)
-        is VarRefContext -> return VarRef(ReferenceByName(this.text), 
+        is IDRefContext -> return IDRef(ReferenceByName(this.text),
                                                        this.toPosition(considerPosition))
         is TypeConversionContext -> 
             return TypeConversion(this.expression().toAST(considerPosition),
@@ -84,8 +78,8 @@ fun StringLiteralContentContext.toAST(considerPosition: Boolean = false): StrLit
 
 fun TypeContext.toAST(considerPosition: Boolean = false): Type {
     when(this) {
-        is IntContext -> return IntType(this.toPosition(considerPosition))
-        is DecContext -> return DecType(this.toPosition(considerPosition))
+        is IntTypeContext -> return IntType(this.toPosition(considerPosition))
+        is DecTypeContext -> return DecType(this.toPosition(considerPosition))
         else -> throw UnsupportedOperationException(this.javaClass.canonicalName)
     }
 }
