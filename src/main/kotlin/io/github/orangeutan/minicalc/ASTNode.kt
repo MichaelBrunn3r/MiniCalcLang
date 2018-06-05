@@ -41,7 +41,7 @@ interface ASTNode {
                 if(paramType is Class<*> && ASTNode::class.java.isAssignableFrom(paramType)) {
                     sb.append("$indent${"    "}${it.name} = [\n")
                     (it.get(this) as List<out ASTNode>).forEach({
-                        sb.append(it.toMultilineStr(indent + "        "))
+                        sb.append(it.toMultilineStr("$indent        "))
                     })
                     sb.append("$indent${"    "}]\n")
                 }
@@ -49,7 +49,7 @@ interface ASTNode {
                 val value = it.get(this)
                 if(value is ASTNode) {
                     sb.append("$indent${"    "}${it.name} = [\n")
-                    sb.append(value.toMultilineStr(indent + "        "))
+                    sb.append(value.toMultilineStr("$indent        "))
                     sb.append("$indent${"    "}${it.name} = ${it.get(this)}\n")
                 }
             }

@@ -1,14 +1,11 @@
-package io.github.orangeutan.minicalc;
+package io.github.orangeutan.minicalc
 
 import kotlin.test.assertEquals
 import org.junit.Test
 
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.CharStreams
 
-import java.util.LinkedList;
-
-import io.github.orangeutan.minicalc.MiniCalcLexer;
+import java.util.LinkedList
 
 fun lexerForStr(str: String) = MiniCalcLexer(CharStreams.fromString(str))
 
