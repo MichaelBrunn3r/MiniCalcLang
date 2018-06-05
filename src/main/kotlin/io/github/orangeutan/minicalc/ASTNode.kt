@@ -4,6 +4,7 @@ import kotlin.reflect.full.*
 import  kotlin.reflect.jvm.*
 
 import java.lang.reflect.ParameterizedType
+import java.util.IdentityHashMap
 
 interface ASTNode {
     val position: Position?
@@ -21,7 +22,7 @@ interface ASTNode {
     }
 
     /* Executes an operation on all AST Nodes for which the filter return true */
-    fun execOnAST(op: (ASTNode) -> Unit, filter: (ASTNode) -> Boolean) {
+    fun execOnAST(filter: (ASTNode) -> Boolean, op: (ASTNode) -> Unit) {
         execOnAST({ if(filter(it)) op(it) })
     }
 
