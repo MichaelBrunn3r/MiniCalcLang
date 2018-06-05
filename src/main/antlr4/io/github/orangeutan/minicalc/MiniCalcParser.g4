@@ -7,10 +7,10 @@ miniCalcFile : lines=line+;
 
 line : statement (NEWLINE|EOF);
 
-statement : inputDeclaration # inputDeclarationStatement
-          | varDeclaration   # varDeclarationStatement
-          | assignment       # assignmentStatement
-          | print            # printStatement;
+statement : inputDeclaration # InputDeclarationStatement
+          | varDeclaration   # VarDeclarationStatement
+          | assignment       # AssignmentStatement
+          | print            # PrintStatement;
 
 print : PRINT LPAREN expression RPAREN;
 
@@ -20,19 +20,19 @@ varDeclaration : VAR assignment;
 
 assignment : ID ASSIGN expression;
 
-expression : left=expression operator=(DIVISION|ASTERISK) right=expression # binOp
-           | left=expression operator=(PLUS|MINUS) right=expression # binOp
-           | value=expression AS targetType=type # typeConversion
-           | LPAREN expression RPAREN  # parenExpr
-           | ID # varRef
-           | MINUS expression # negExpr
-           | STR_OPEN (parts+=stringLiteralContent)* STR_CLOSE # strLit
-           | INTLIT # intLit
-           | DECLIT # decLit;
+expression : left=expression operator=(DIVISION|ASTERISK) right=expression # BinOp
+           | left=expression operator=(PLUS|MINUS) right=expression # BinOp
+           | value=expression AS targetType=type # TypeConversion
+           | LPAREN expression RPAREN  # ParenExpr
+           | ID # IDRef
+           | MINUS expression # NegExpr
+           | STR_OPEN (parts+=stringLiteralContent)* STR_CLOSE # StrLit
+           | INTLIT # IntLit
+           | DECLIT # DecLit;
 
-stringLiteralContent : STR_CONTENT # strLitConstContent
-                     | INTERP_OPEN expression INTERP_CLOSE # strLitInterpContent;
+stringLiteralContent : STR_CONTENT # StrLitConstContent
+                     | INTERP_OPEN expression INTERP_CLOSE # StrLitInterpContent;
 
-type : INT # int
-     | DECIMAL  # dec
-     | STRING # str;
+type : INT # IntType
+     | DECIMAL  # DecType
+     | STRING # StrType;

@@ -3,3 +3,5 @@ target
 .vscode
 .settings
 src/main/antlr4/io/github/orangeutan/minicalc/\.antlr/
+
+\.idea/
