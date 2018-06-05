@@ -78,10 +78,10 @@ data class StrLitInterpContent(val expression: Expression,
 
 interface NamedValDeclaration: Statement, Named
 
-data class VarDeclaration(override val name: String, val value: Expression,
+data class VarDeclaration(override var name: String, val value: Expression,
                            override val position: Position? = null): NamedValDeclaration
 
-data class InputDeclaration(override val name: String, val type: Type,
+data class InputDeclaration(override var name: String, val type: Type,
                              override val position: Position? = null): NamedValDeclaration
 
 
