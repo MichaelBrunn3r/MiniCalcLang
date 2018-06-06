@@ -8,11 +8,14 @@ import java.util.IdentityHashMap
 
 interface ASTNode {
     val position: Position?
+    var parent: ASTNode?
 
     /* Executes an operation on all AST Nodes */
     fun execOnAST(op: (ASTNode) -> Unit) {
         op(this)
-        this.javaClass.kotlin.memberProperties.forEach({ p ->
+        this.javaClass.kotlin.memberProperties.filter {
+            !it.name.equals("parent") && !it.name.equals("position")
+        }.forEach({ p ->
             val value = p.get(this) // Get the value of the member Property of this instance
             when(value) {
                 is ASTNode -> value.execOnAST(op)
@@ -34,7 +37,7 @@ interface ASTNode {
         sb.append("$indent${this.javaClass.simpleName} {\n")
     
         this.javaClass.kotlin.memberProperties.filter({ 
-            !it.name.startsWith("component") && !it.name.equals("position")
+            !it.name.startsWith("component") && !it.name.equals("parent") && !it.name.equals("position")
         }).forEach({ 
             val retType = it.returnType.javaType
             if(retType is ParameterizedType && retType.rawType.equals(List::class.java)) {
