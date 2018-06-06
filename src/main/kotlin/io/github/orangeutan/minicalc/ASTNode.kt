@@ -10,6 +10,14 @@ interface ASTNode {
     val position: Position?
     var parent: ASTNode?
 
+    fun <T: ASTNode> findNearestAncestor(clazz: Class<T>): T? {
+        if(this.parent != null) {
+            return if(clazz.isInstance(this.parent)) this.parent as T
+                   else this.parent!!.findNearestAncestor(clazz)
+        }
+        return null
+    }
+
     /* Executes an operation on all AST Nodes */
     fun execOnAST(op: (ASTNode) -> Unit) {
         op(this)

@@ -27,6 +27,7 @@ class MiniCalcASTTest {
 
     @Test
     fun testToMultinineString() {
+        /** Test if the Method ASTNode.toMultilineString works correclty */
         val ast =
                 MiniCalcFile(listOf<Statement>(
                     VarDeclaration("a",
@@ -49,6 +50,31 @@ class MiniCalcASTTest {
         var expectedStr = readResource(getResource("astTest/toMultilineString"))
 
         assertEquals(expectedStr, ast.toMultilineStr())
+    }
+
+    @Test
+    fun testFindNearestAncestor() {
+        /** Test if the Method ASTNode.findNearestAncestor works correctly */
+        val intlit = IntLit("1", Position(1,8,1,8))
+        val varDecl =
+            VarDeclaration("a",
+                AdditionExpr(
+                    intlit,
+                    IntLit("2", Position(1,12,1,12)),
+                    Position(1,8,1,12)
+                ),
+                Position(1,0,1,12)
+            )
+
+        val ast =
+                MiniCalcFile(listOf<Statement>(
+                        varDecl
+                    ),
+                    Position(1,0,2,13))
+
+        assertEquals(ast.findNearestAncestor(ASTNode::class.java), null)
+        assert(intlit.findNearestAncestor(VarDeclaration::class.java)!!.equals(varDecl))
+        assert(intlit.findNearestAncestor(MiniCalcFile::class.java)!!.equals(ast))
     }
 
     @Test
