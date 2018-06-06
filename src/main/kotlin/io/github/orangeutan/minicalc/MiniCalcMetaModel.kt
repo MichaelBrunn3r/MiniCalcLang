@@ -8,6 +8,23 @@ data class MiniCalcFile(val statements: List<Statement>,
     init {
         this.statements.forEach{ it.parent = this}
     }
+
+    fun resolveSymbols() {
+        // resolve reference to the closest thing before
+        this.execOnAST(clazz = IDRef::class.java) {
+            val statement = it.findNearestAncestor(Statement::class.java)!!
+            val namedValDeclarations = this.statements.subList(0, this.statements.indexOf(statement))
+                                                                                .filterIsInstance<NamedValDeclaration>()
+            it.varName.tryToResolve(namedValDeclarations.reversed())
+        }
+
+        // consider assignments
+        this.execOnAST (clazz= Assignment::class.java) {
+            val namedValDeclarations = this.statements.subList(0, this.statements.indexOf(it))
+                                                                        .filterIsInstance<VarDeclaration>()
+            it.varDecl.tryToResolve(namedValDeclarations.reversed())
+        }
+    }
 }
 
 interface Statement: ASTNode
