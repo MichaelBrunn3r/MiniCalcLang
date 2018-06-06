@@ -89,7 +89,7 @@ fun BinOpContext.toAST(savePos: Boolean = false): Expression {
         "+" -> return AdditionExpr(this.left.toAST(savePos),
                                     this.right.toAST(savePos),
                                     this.toPosition(savePos))
-        "-" -> return SubstractionExpr(this.left.toAST(savePos),
+        "-" -> return SubtractionExpr(this.left.toAST(savePos),
                                         this.right.toAST(savePos),
                                         this.toPosition(savePos))
         "*" -> return MultiplicationExpr(this.left.toAST(savePos),

@@ -30,8 +30,8 @@ data class AdditionExpr(override val left: Expression, override val right: Expre
                          override val position: Position? = null): BinaryExpression
 
 
-data class SubstractionExpr(override val left: Expression, override val right: Expression, 
-                             override val position: Position? = null): BinaryExpression
+data class SubtractionExpr(override val left: Expression, override val right: Expression,
+                           override val position: Position? = null): BinaryExpression
 
 
 data class MultiplicationExpr(override val left: Expression, override val right: Expression, 
