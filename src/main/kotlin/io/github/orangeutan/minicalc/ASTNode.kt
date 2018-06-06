@@ -32,9 +32,14 @@ interface ASTNode {
         })
     }
 
-    /* Executes an operation on all AST Nodes for which the filter return true */
+    /** Executes an operation on all AST Nodes for which the filter returns true */
     fun execOnAST(filter: (ASTNode) -> Boolean, op: (ASTNode) -> Unit) {
         execOnAST({ if(filter(it)) op(it) })
+    }
+
+    /** Executes an operation on all ASTNodes of a specific class */
+    fun <T: ASTNode> execOnAST(clazz: Class<T>, op: (T) -> Unit) {
+        execOnAST { if(clazz.isInstance(it)){ op(it as T) } }
     }
 
     fun isBefore(node: ASTNode): Boolean
