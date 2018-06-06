@@ -10,12 +10,46 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 class MiniCalcASTTest {
 
+    fun getResource(resName: String): URL {
+        return this.javaClass.classLoader.getResource(resName)
+    }
+
+    fun readResource(res: URL): String {
+        return res.openStream().bufferedReader().use { it.readText() }
+    }
+
     fun lexerForResource(resource: URL): MiniCalcLexer
         = MiniCalcLexer(CharStreams.fromStream(resource.openStream()))
 
     fun parseResource(resourceName: String): MiniCalcParser.MiniCalcFileContext {
-        return MiniCalcParser(CommonTokenStream(lexerForResource(this.javaClass.classLoader.getResource(resourceName)))).miniCalcFile()
-    } 
+        return MiniCalcParser(CommonTokenStream(lexerForResource(getResource(resourceName)))).miniCalcFile()
+    }
+
+    @Test
+    fun testToMultinineString() {
+        val ast =
+                MiniCalcFile(listOf<Statement>(
+                    VarDeclaration("a",
+                        AdditionExpr(
+                            IntLit("1", Position(1,8,1,8)),
+                            IntLit("2", Position(1,12,1,12)),
+                            Position(1,8,1,12)),
+                        Position(1,0,1,12)),
+                    Assignment(ReferenceByName("a"),
+                        MultiplicationExpr(
+                            IntLit("7", Position(2,4,2,4)),
+                            DivisionExpr(
+                                IntLit("2", Position(2,9,2,9)),
+                                IntLit("3", Position(2,11,2,11)),
+                                Position(2,9,2,11)),
+                            Position(2,4,2,12)),
+                        Position(2,0,2,12))),
+                    Position(1,0,2,13))
+
+        var expectedStr = readResource(getResource("astTest/toMultilineString"))
+
+        assertEquals(expectedStr, ast.toMultilineStr())
+    }
 
     @Test
     fun testRenameVar() {
