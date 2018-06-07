@@ -74,6 +74,16 @@ interface ASTNode {
         sb.append("$indent}\n")
         return sb.toString()
     }
+
+    fun <T: ASTNode> collectByType(clazz: Class<T>): List<T> {
+        val typeList = mutableListOf<T>()
+
+        this.execOnAST(clazz) {
+            typeList.add(it as T)
+        }
+
+        return typeList
+    }
 }
 
 data class Point(val line: Int, val column: Int) {
