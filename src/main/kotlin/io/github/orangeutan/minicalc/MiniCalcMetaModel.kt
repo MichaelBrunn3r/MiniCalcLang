@@ -11,11 +11,11 @@ data class MiniCalcFile(val statements: List<Statement>,
 
     fun resolveSymbols() {
         // resolve reference to the closest thing before
-        this.execOnAST(clazz = IDRef::class.java) {
+        this.execOnAST(clazz = VarRef::class.java) {
             val statement = it.findNearestAncestor(Statement::class.java)!!
             val namedValDeclarations = this.statements.subList(0, this.statements.indexOf(statement))
                                                                                 .filterIsInstance<NamedValDeclaration>()
-            it.varName.tryToResolve(namedValDeclarations.reversed())
+            it.reference.tryToResolve(namedValDeclarations.reversed())
         }
 
         // consider assignments
@@ -113,8 +113,8 @@ data class TypeConversion(val value: Expression, val targetType: Type,
 }
 
 
-data class IDRef(val varName: ReferenceByName<NamedValDeclaration>,
-                               override val position: Position? = null): Expression {
+data class VarRef(val reference: ReferenceByName<NamedValDeclaration>,
+                  override val position: Position? = null): Expression {
     override var parent: ASTNode? = null
 }
 

@@ -74,7 +74,7 @@ fun MiniCalcAntlrParser.ExpressionContext.toAST(savePos: Boolean = false): Expre
             return StrLit(this.parts.map({ it.toAST(savePos) }),
                     this.toPosition(savePos))
         is MiniCalcAntlrParser.ParenExprContext -> return this.expression().toAST(savePos)
-        is MiniCalcAntlrParser.IDRefContext -> return IDRef(ReferenceByName(this.text),
+        is MiniCalcAntlrParser.VarRefContext -> return VarRef(ReferenceByName(this.text),
                 this.toPosition(savePos))
         is MiniCalcAntlrParser.TypeConversionContext ->
             return TypeConversion(this.expression().toAST(savePos),

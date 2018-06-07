@@ -72,19 +72,19 @@ class MiniCalcASTTest {
         val ast = MiniCalcFile(listOf<Statement>(
             VarDeclaration("A", IntLit("10")),
             Assignment(ReferenceByName("A"), IntLit("11")),
-            Print(IDRef(ReferenceByName("A")))
+            Print(VarRef(ReferenceByName("A")))
         ))
 
         val expectedTransformedAST = MiniCalcFile(listOf<Statement>(
             VarDeclaration("B", IntLit("10")),
             Assignment(ReferenceByName("B"), IntLit("11")),
-            Print(IDRef(ReferenceByName("B")))
+            Print(VarRef(ReferenceByName("B")))
         ))
 
         ast.execOnAST({
             when(it) {
                 is VarDeclaration -> it.name = "B"
-                is IDRef -> it.varName.name = "B"
+                is VarRef -> it.reference.name = "B"
                 is Assignment -> it.varDecl.name = "B"
             }})
         assertEquals(expectedTransformedAST, ast)
@@ -184,7 +184,7 @@ class MiniCalcASTTest {
     fun testPrint() {
         val expectedAST =
             MiniCalcFile(listOf<Statement>(
-                Print(IDRef(ReferenceByName("a")))
+                Print(VarRef(ReferenceByName("a")))
             ))
         val ast = MiniCalcParser.parseResource("astTest/print.mc", false)
 
