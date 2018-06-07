@@ -18,11 +18,11 @@ class MiniCalcASTTest {
         return res.openStream().bufferedReader().use { it.readText() }
     }
 
-    fun lexerForResource(resource: URL): MiniCalcLexer
-        = MiniCalcLexer(CharStreams.fromStream(resource.openStream()))
+    fun lexerForResource(resource: URL): MiniCalcAntlrLexer
+        = MiniCalcAntlrLexer(CharStreams.fromStream(resource.openStream()))
 
-    fun parseResource(resourceName: String): MiniCalcParser.MiniCalcFileContext {
-        return MiniCalcParser(CommonTokenStream(lexerForResource(getResource(resourceName)))).miniCalcFile()
+    fun parseResource(resourceName: String): MiniCalcAntlrParser.MiniCalcFileContext {
+        return MiniCalcAntlrParser(CommonTokenStream(lexerForResource(getResource(resourceName)))).miniCalcFile()
     }
 
     @Test

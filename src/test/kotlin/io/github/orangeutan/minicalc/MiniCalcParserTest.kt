@@ -13,8 +13,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import org.apache.commons.io.IOUtils;
 
-import io.github.orangeutan.minicalc.MiniCalcLexer;
-import io.github.orangeutan.minicalc.MiniCalcParser;
+import io.github.orangeutan.minicalc.MiniCalcAntlrLexer;
+import io.github.orangeutan.minicalc.MiniCalcAntlrParser;
 
 abstract class ParseTreeElement {
     abstract fun toMultilineStr(indentation: String = ""): String
@@ -53,11 +53,11 @@ class ParseTreeNode(var name: String): ParseTreeElement(){
 fun getResource(resName: String, cls: Class<Any>): URL 
     = cls.classLoader.getResource(resName)
 
-fun lexerForResource(resource: URL): MiniCalcLexer
-    = MiniCalcLexer(CharStreams.fromStream(resource.openStream()))
+fun lexerForResource(resource: URL): MiniCalcAntlrLexer
+    = MiniCalcAntlrLexer(CharStreams.fromStream(resource.openStream()))
 
-fun parseResource(resource: URL): MiniCalcParser.MiniCalcFileContext
-    = MiniCalcParser(CommonTokenStream(lexerForResource(resource))).miniCalcFile()
+fun parseResource(resource: URL): MiniCalcAntlrParser.MiniCalcFileContext
+    = MiniCalcAntlrParser(CommonTokenStream(lexerForResource(resource))).miniCalcFile()
 
 
 fun toParseTree(node: ParserRuleContext): ParseTreeNode {
@@ -66,7 +66,7 @@ fun toParseTree(node: ParserRuleContext): ParseTreeNode {
     node.children.forEach{ c ->
         when(c) {
             is ParserRuleContext -> treeNode.addChild(toParseTree(c))
-            is TerminalNode -> treeNode.addChild(ParseTreeLeaf(MiniCalcLexer.VOCABULARY.getSymbolicName(c.symbol.type), c.text))
+            is TerminalNode -> treeNode.addChild(ParseTreeLeaf(MiniCalcAntlrLexer.VOCABULARY.getSymbolicName(c.symbol.type), c.text))
         }
     }
     return treeNode

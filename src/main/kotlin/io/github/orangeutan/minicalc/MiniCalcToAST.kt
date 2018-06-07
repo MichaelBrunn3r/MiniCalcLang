@@ -3,7 +3,7 @@ package io.github.orangeutan.minicalc
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.ParserRuleContext
 
-import io.github.orangeutan.minicalc.MiniCalcParser.*
+import io.github.orangeutan.minicalc.MiniCalcAntlrParser.*
 
 fun Token.startPoint() = Point(this.line, this.charPositionInLine)
 

@@ -1,7 +1,7 @@
-parser grammar MiniCalcParser;
+parser grammar MiniCalcAntlrParser;
 
 // We specify which lexer we are using: so it knows which terminals we can use
-options { tokenVocab=MiniCalcLexer; }
+options { tokenVocab=MiniCalcAntlrLexer; }
 
 miniCalcFile : lines=line+;
 

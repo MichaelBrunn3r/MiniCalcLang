@@ -7,27 +7,27 @@ import org.antlr.v4.runtime.CharStreams
 
 import java.util.LinkedList
 
-fun lexerForStr(str: String) = MiniCalcLexer(CharStreams.fromString(str))
+fun lexerForStr(str: String) = MiniCalcAntlrLexer(CharStreams.fromString(str))
 
-fun tokenContents(lexer: MiniCalcLexer): List<String> {
+fun tokenContents(lexer: MiniCalcAntlrLexer): List<String> {
     val tokens = LinkedList<String>()
     do {
         val token = lexer.nextToken()
         when(token.type) {
             -1   -> tokens.add("EOF")
-            else -> if(token.type != MiniCalcLexer.WS) tokens.add(lexer.text)
+            else -> if(token.type != MiniCalcAntlrLexer.WS) tokens.add(lexer.text)
         }
     } while (token.type != -1)
     return tokens
 }
 
-fun tokenNames(lexer: MiniCalcLexer) : List<String> {
+fun tokenNames(lexer: MiniCalcAntlrLexer) : List<String> {
     val tokens = LinkedList<String>()
     do {
         val token = lexer.nextToken()
         when(token.type) {
             -1   -> tokens.add("EOF")
-            else -> if(token.type != MiniCalcLexer.WS) tokens.add(MiniCalcLexer.VOCABULARY.getSymbolicName(token.type))
+            else -> if(token.type != MiniCalcAntlrLexer.WS) tokens.add(MiniCalcAntlrLexer.VOCABULARY.getSymbolicName(token.type))
         }
     } while (token.type != -1)
     return tokens

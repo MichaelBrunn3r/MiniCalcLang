@@ -1,4 +1,4 @@
-lexer grammar MiniCalcLexer;
+lexer grammar MiniCalcAntlrLexer;
 
 channels { WHITESPACE }
 
