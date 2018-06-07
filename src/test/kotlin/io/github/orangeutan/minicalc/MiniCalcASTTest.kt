@@ -5,9 +5,6 @@ import org.junit.Test
 
 import java.net.URL
 
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
-
 class MiniCalcASTTest {
 
     fun getResource(resName: String): URL {
@@ -16,13 +13,6 @@ class MiniCalcASTTest {
 
     fun readResource(res: URL): String {
         return res.openStream().bufferedReader().use { it.readText() }
-    }
-
-    fun lexerForResource(resource: URL): MiniCalcAntlrLexer
-        = MiniCalcAntlrLexer(CharStreams.fromStream(resource.openStream()))
-
-    fun parseResource(resourceName: String): MiniCalcAntlrParser.MiniCalcFileContext {
-        return MiniCalcAntlrParser(CommonTokenStream(lexerForResource(getResource(resourceName)))).miniCalcFile()
     }
 
     @Test
@@ -114,8 +104,8 @@ class MiniCalcASTTest {
                     Position(1,0,1,8))),
                 Position(1,0,1,9))
 
-        val astWithoutPos = parseResource("astTest/varDeclaration.mc").toAST(savePos=false)
-        val astWithPos = parseResource("astTest/varDeclaration.mc").toAST(savePos= true)
+        val astWithoutPos = MiniCalcParser.parseResource("astTest/varDeclaration.mc", false)
+        val astWithPos = MiniCalcParser.parseResource("astTest/varDeclaration.mc", true)
 
         assertEquals(expectedASTWithoutPos, astWithoutPos)
         assertEquals(expectedASTWith, astWithPos)
@@ -161,8 +151,8 @@ class MiniCalcASTTest {
                     Position(2,0,2,12))),
                 Position(1,0,2,13))
 
-        val astWithoutPos = parseResource("astTest/simpleFile.mc").toAST(savePos= false)
-        val astWithPos = parseResource("astTest/simpleFile.mc").toAST(savePos= true)
+        val astWithoutPos = MiniCalcParser.parseResource("astTest/simpleFile.mc", false)
+        val astWithPos = MiniCalcParser.parseResource("astTest/simpleFile.mc", true)
 
         assertEquals(expectedASTWithoutPos, astWithoutPos)
         assertEquals(expectedASTWithPos, astWithPos)
@@ -185,7 +175,7 @@ class MiniCalcASTTest {
                     )
                 )
             ))
-        val ast = parseResource("astTest/castNumbers.mc").toAST(savePos= false)
+        val ast = MiniCalcParser.parseResource("astTest/castNumbers.mc", false)
 
         assertEquals(expectedAST, ast)
     }
@@ -196,7 +186,7 @@ class MiniCalcASTTest {
             MiniCalcFile(listOf<Statement>(
                 Print(IDRef(ReferenceByName("a")))
             ))
-        val ast = parseResource("astTest/print.mc").toAST(savePos= false)
+        val ast = MiniCalcParser.parseResource("astTest/print.mc", false)
 
         assertEquals(expectedAST, ast)
     }
