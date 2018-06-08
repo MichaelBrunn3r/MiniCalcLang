@@ -29,22 +29,63 @@ data class MiniCalcFile(val statements: List<Statement>,
 
 interface Statement: ASTNode
 
-interface Expression: ASTNode
+interface Expression: ASTNode {
+    fun type(): Type =
+        when(this) {
+            is IntLit -> IntType()
+            is DecLit -> DecType()
+            is StrLit -> StrType()
+            is AdditionExpr -> {
+                if(this.left.type() is StrType) StrType()
+                else if(this.onNumbers()) {
+                    if(this.left.type() is DecType || this.right.type() is DecType) DecType()
+                    else IntType()
+                } else throw IllegalArgumentException("This operation should be performed on numbers or start with a String")
+            }
+            is SubtractionExpr, is MultiplicationExpr, is DivisionExpr -> {
+                val binExpr = this as BinaryExpression
+                if(!binExpr.onNumbers()) throw IllegalArgumentException("This operation should be performed on numbers")
 
-interface Type: ASTNode
+                if(binExpr.left.type() is DecType || binExpr.right.type() is DecType) DecType()
+                else IntType()
+            }
+            is UnaryMinusExpr -> this.value.type()
+            is TypeConversion -> this.targetType
+            is VarRef -> this.reference.referred!!.type()
+            else -> throw UnsupportedOperationException("No way to calculate the type of $this")
+        }
+}
+
+interface Type: ASTNode {
+    fun isAssignableBy(type: Type): Boolean {
+        return this.equals(type)
+    }
+
+    fun isNumberType(): Boolean
+}
 
 // Types
 
 data class IntType(override val position: Position? = null): Type {
     override var parent: ASTNode? = null
+
+    override fun isNumberType() = true
 }
 
 data class DecType(override val position: Position? = null): Type {
     override var parent: ASTNode? = null
+
+    override fun isAssignableBy(type: Type): Boolean {
+        return type is IntType || type is DecType
+    }
+
+    override fun isNumberType(): Boolean = true
 }
 
 data class StrType(override val position: Position? = null): Type {
     override var parent: ASTNode? = null
+
+    override fun isNumberType(): Boolean = false
 }
 
 /* Binary Expression */
@@ -52,6 +93,8 @@ data class StrType(override val position: Position? = null): Type {
 interface BinaryExpression: Expression {
     val left: Expression
     val right: Expression
+
+    fun onNumbers() = this.left.type().isNumberType() && right.type().isNumberType()
 }
 
 data class AdditionExpr(override val left: Expression, override val right: Expression,
@@ -74,7 +117,7 @@ data class SubtractionExpr(override val left: Expression, override val right: Ex
 }
 
 
-data class MultiplicationExpr(override val left: Expression, override val right: Expression, 
+data class MultiplicationExpr(override val left: Expression, override val right: Expression,
                                override val position: Position? = null): BinaryExpression {
     override var parent: ASTNode? = null
     init {
@@ -84,7 +127,7 @@ data class MultiplicationExpr(override val left: Expression, override val right:
 }
 
 
-data class DivisionExpr(override val left: Expression, override val right: Expression, 
+data class DivisionExpr(override val left: Expression, override val right: Expression,
                          override val position: Position? = null): BinaryExpression {
     override var parent: ASTNode? = null
     init {
@@ -96,7 +139,7 @@ data class DivisionExpr(override val left: Expression, override val right: Expre
 
 /* Expressions */
 
-data class UnaryMinusExpr(val value: Expression, 
+data class UnaryMinusExpr(val value: Expression,
                            override val position: Position? = null): Expression {
     override var parent: ASTNode? = null
     init {
@@ -104,7 +147,7 @@ data class UnaryMinusExpr(val value: Expression,
     }
 }
 
-data class TypeConversion(val value: Expression, val targetType: Type, 
+data class TypeConversion(val value: Expression, val targetType: Type,
                            override val position: Position? = null): Expression {
     override var parent: ASTNode? = null
     init {
@@ -128,7 +171,7 @@ data class DecLit(val value: String, override val position: Position? = null): E
     override var parent: ASTNode? = null
 }
 
-data class StrLit(val parts: List<StrLitContent>, 
+data class StrLit(val parts: List<StrLitContent>,
                       override val position: Position? = null): Expression {
     override var parent: ASTNode? = null
 }
@@ -137,7 +180,7 @@ data class StrLit(val parts: List<StrLitContent>,
 
 interface StrLitContent: ASTNode
 
-data class StrLitConstContent(val content: String, 
+data class StrLitConstContent(val content: String,
                                override val position: Position? = null): StrLitContent {
     override var parent: ASTNode? = null
 }
@@ -153,7 +196,15 @@ data class StrLitInterpContent(val expression: Expression,
 
 /* Statements */
 
-interface NamedValDeclaration: Statement, Named
+interface NamedValDeclaration: Statement, Named {
+    fun type(): Type {
+        when(this) {
+            is VarDeclaration -> return this.value.type()
+            is InputDeclaration -> return this.type
+            else -> throw UnsupportedOperationException()
+        }
+    }
+}
 
 data class VarDeclaration(override var name: String, val value: Expression,
                            override val position: Position? = null): NamedValDeclaration {
