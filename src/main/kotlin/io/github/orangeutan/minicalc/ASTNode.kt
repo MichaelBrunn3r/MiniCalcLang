@@ -79,7 +79,7 @@ interface ASTNode {
         val typeList = mutableListOf<T>()
 
         this.execOnAST(clazz) {
-            typeList.add(it as T)
+            typeList.add(it)
         }
 
         return typeList

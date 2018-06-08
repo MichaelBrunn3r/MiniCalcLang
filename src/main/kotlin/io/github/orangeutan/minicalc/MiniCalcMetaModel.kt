@@ -11,7 +11,7 @@ data class MiniCalcFile(val statements: List<Statement>,
 
     fun resolveSymbols() {
         // resolve reference to the closest thing before
-        this.execOnAST(clazz = VarRef::class.java) {
+        this.execOnAST(clazz = SymbolRef::class.java) {
             val statement = it.findNearestAncestor(Statement::class.java)!!
             val namedValDeclarations = this.statements.subList(0, this.statements.indexOf(statement))
                                                                                 .filterIsInstance<NamedValDeclaration>()
@@ -51,7 +51,7 @@ interface Expression: ASTNode {
             }
             is UnaryMinusExpr -> this.value.type()
             is TypeConversion -> this.targetType
-            is VarRef -> this.reference.referred!!.type()
+            is SymbolRef -> this.reference.referred!!.type()
             else -> throw UnsupportedOperationException("No way to calculate the type of $this")
         }
 }
@@ -156,8 +156,8 @@ data class TypeConversion(val value: Expression, val targetType: Type,
 }
 
 
-data class VarRef(val reference: ReferenceByName<NamedValDeclaration>,
-                  override val position: Position? = null): Expression {
+data class SymbolRef(val reference: ReferenceByName<NamedValDeclaration>,
+                     override val position: Position? = null): Expression {
     override var parent: ASTNode? = null
 }
 

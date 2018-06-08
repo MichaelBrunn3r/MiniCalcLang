@@ -24,7 +24,7 @@ expression : left=expression operator=(DIVISION|ASTERISK) right=expression # Bin
            | left=expression operator=(PLUS|MINUS) right=expression # BinOp
            | value=expression AS targetType=type # TypeConversion
            | LPAREN expression RPAREN  # ParenExpr
-           | ID # VarRef
+           | ID # SymbolRef
            | MINUS expression # NegExpr
            | STR_OPEN (parts+=stringLiteralContent)* STR_CLOSE # StrLit
            | INTLIT # IntLit

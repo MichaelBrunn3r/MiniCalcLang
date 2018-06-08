@@ -10,7 +10,7 @@ class SymbolResolutionTest {
         val ast = MiniCalcParser.parseResource("symbolTest/resolveRefToVarDeclaredBefore.mc")
         ast.resolveSymbols()
 
-        val varRefs = ast.collectByType(VarRef::class.java)
+        val varRefs = ast.collectByType(SymbolRef::class.java)
         assertEquals(1, varRefs.size)
         assertEquals(true, varRefs[0].reference.isResolved)
         assertEquals("a", varRefs[0].reference.name)
@@ -21,7 +21,7 @@ class SymbolResolutionTest {
         val ast = MiniCalcParser.parseResource("symbolTest/resolveRefToVarDeclaredOnSameLine.mc")
         ast.resolveSymbols()
 
-        val varRefs = ast.collectByType(VarRef::class.java)
+        val varRefs = ast.collectByType(SymbolRef::class.java)
         assertEquals(1, varRefs.size)
         assertEquals(false, varRefs[0].reference.isResolved)
     }
@@ -31,7 +31,7 @@ class SymbolResolutionTest {
         val ast = MiniCalcParser.parseResource("symbolTest/resolveRefToVarDeclaredAfter.mc")
         ast.resolveSymbols()
 
-        val varRefs = ast.collectByType(VarRef::class.java)
+        val varRefs = ast.collectByType(SymbolRef::class.java)
         assertEquals(1, varRefs.size)
         assertEquals(false, varRefs[0].reference.isResolved)
     }
@@ -41,7 +41,7 @@ class SymbolResolutionTest {
         val ast = MiniCalcParser.parseResource("symbolTest/resolveRefToInputDeclaredBefore.mc")
         ast.resolveSymbols()
 
-        val varRefs = ast.collectByType(VarRef::class.java)
+        val varRefs = ast.collectByType(SymbolRef::class.java)
         assertEquals(1, varRefs.size)
         assertEquals(true, varRefs[0].reference.isResolved)
         assertEquals("a", varRefs[0].reference.name)
@@ -52,7 +52,7 @@ class SymbolResolutionTest {
         val ast = MiniCalcParser.parseResource("symbolTest/resolveRefToInputDeclaredAfter.mc")
         ast.resolveSymbols()
 
-        val varRefs = ast.collectByType(VarRef::class.java)
+        val varRefs = ast.collectByType(SymbolRef::class.java)
         assertEquals(1, varRefs.size)
         assertEquals(false, varRefs[0].reference.isResolved)
     }
@@ -62,7 +62,7 @@ class SymbolResolutionTest {
         val ast = MiniCalcParser.parseResource("symbolTest/resolveRefToNonexistentVar.mc")
         ast.resolveSymbols()
 
-        val varRefs = ast.collectByType(VarRef::class.java)
+        val varRefs = ast.collectByType(SymbolRef::class.java)
         assertEquals(1, varRefs.size)
         assertEquals(false, varRefs[0].reference.isResolved)
     }
