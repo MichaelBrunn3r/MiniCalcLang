@@ -1,5 +1,8 @@
 package io.github.orangeutan.minicalc
 
+import java.util.*
+import kotlin.collections.HashMap
+
 // MiniCalc main entities
 
 data class MiniCalcFile(val statements: List<Statement>,
@@ -24,6 +27,43 @@ data class MiniCalcFile(val statements: List<Statement>,
                                                                         .filterIsInstance<VarDeclaration>()
             it.varDecl.tryToResolve(namedValDeclarations.reversed())
         }
+    }
+
+    fun validate(): List<ValidationError> {
+        val errors = LinkedList<ValidationError>()
+
+        //check if a variable is not duplicated
+        val varsByName = HashMap<String, VarDeclaration>()
+        this.execOnAST(VarDeclaration::class.java) {
+            if(varsByName.containsKey(it.name)) {
+                errors.add(ValidationError("A variable named '${it.name}' has been already declared!", it.position!!))
+            } else {
+                varsByName[it.name] = it
+            }
+        }
+
+        // check if all references are resolved
+        this.execOnAST(SymbolRef::class.java) {
+            if(!it.reference.isResolved)
+                errors.add(ValidationError("Unresolved reference ${it.reference.name}", it.position!!))
+        }
+        this.execOnAST(Assignment::class.java) {
+            if(!it.varDecl.isResolved)
+                errors.add(ValidationError("Unresolved reference ${it.varDecl.name}", it.position!!))
+        }
+
+        // check if assignments use compatible types
+        this.execOnAST(Assignment::class.java) {
+            if(it.varDecl.isResolved) {
+                val valueType = it.value.type()
+                val varType = it.varDecl.referred!!.type()
+                if(!varType.isAssignableBy(valueType)) {
+                    errors.add(ValidationError("Cannot assign $valueType to variable of type $varType", it.position!!))
+                }
+            }
+        }
+
+        return errors
     }
 }
 
